@@ -1,23 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Complete Website</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
+    <meta charset="UTF-8">
+    <title>Proxy Server</title>
+    <script>
+        async function sendRequest() {
+            const url = document.getElementById('url').value;
+            const method = document.getElementById('method').value;
+            const headers = document.getElementById('headers').value;
+            const body = document.getElementById('body').value;
+
+            const response = await fetch('/proxy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    url: url,
+                    method: method,
+                    headers: JSON.parse(headers),
+                    body: JSON.parse(body)
+                })
+            });
+
+            const data = await response.json();
+            document.getElementById('response').innerText = JSON.stringify(data, null, 2);
         }
-        h1 {
-            color: #333;
-        }
-    </style>
+    </script>
 </head>
 <body>
-    <h1>Make complete website today</h1>
+    <h1>Proxy Server</h1>
+    <label for="url">URL:</label>
+    <input type="text" id="url"><br>
+    <label for="method">Method:</label>
+    <input type="text" id="method"><br>
+    <label for="headers">Headers (JSON):</label>
+    <textarea id="headers" rows="4" cols="50"></textarea><br>
+    <label for="body">Body (JSON):</label>
+    <textarea id="body" rows="4" cols="50"></textarea><br>
+    <button onclick="sendRequest()">Send Request</button>
+    <h2>Response</h2>
+    <pre id="response"></pre>
 </body>
 </html>
